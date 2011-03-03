@@ -1,0 +1,4 @@
+name = Weather Pic
+description = Show weather images of www.idokep.hu for Hungary in a block.
+core = 7.x
+files[] = weatherpic.module

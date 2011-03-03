@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Shows the www.idokep.hu heat map image in a block for Hungary.
+ *
+ * This module provides an easy way to show the freely
+ * available Hungarian www.idokep.hu heat map in a block.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function weatherpic_block_info() {
+  $blocks = array();
+  $blocks['weatherpic'] = array(
+    'info' => t('Weather Pic'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function weatherpic_block_view($block_name = '') {
+  if ($block_name == 'weatherpic') {
+    $content = '<img src="http://terkep.idokep.hu/terkep/hu/hom_kozepes.jpg" alt="Heat map">';
+    $block = array(
+      'subject' => t('Weather Pic'),
+      'content' => $content,
+    );
+    return $block;
+  }
+}

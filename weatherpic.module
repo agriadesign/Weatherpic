@@ -21,8 +21,8 @@ function weatherpic_block_info() {
 }
 
 /**
-* Implements hook_block_configure().
-*/
+ * Implements hook_block_configure().
+ */
 function weatherpic_block_configure($delta) {
   $form = array();
   if ($delta == 'weatherpic') {
@@ -48,13 +48,13 @@ function weatherpic_block_configure($delta) {
 }
 
 /**
-* Implements hook_block_save().
-*/
+ * Implements hook_block_save().
+ */
 function weatherpic_block_save($delta, $edit = array()) {
-if($delta == 'weatherpic') {
-variable_set('weatherpics', $edit['weatherpics']);
-}
-return;
+  if($delta == 'weatherpic') {
+    variable_set('weatherpics', $edit['weatherpics']);
+  }
+  return;
 }
 
 /**
@@ -63,39 +63,55 @@ return;
 function weatherpic_block_view($delta) {
   if ($delta == 'weatherpic') {
     $content = '';
+    $link = array();
     $weatherpics = variable_get('weatherpics');
     foreach ($weatherpics as $tmp) {
       if ($tmp != 0) {
         switch ($tmp) {
           case 1:
-            $content .= '<img src="http://terkep.idokep.hu/kis_bp_szenny.jpg" alt="Budapest smog map">';
+            $link[] = 'http://terkep.idokep.hu/kis_bp_szenny.jpg';
+            $alt[] = t('Budapest smog map');
             break;
           case 2:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/wap_idokep.jpg" alt="Clouds map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu/wap_idokep.jpg';
+            $alt[] = t('Clouds map');
             break;
           case 3:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/i_anim.gif" alt="Animated clouds map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu/i_anim.gif';
+            $alt[] = t('Animated clouds map');
             break;
           case 4:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/hom_kozepes.jpg" alt="Heat map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu/hom_kozepes.jpg';
+            $alt[] = t('Heat map');
             break;
           case 5:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu_mini/uvfeny_small.jpg" alt="UV map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu_mini/uvfeny_small.jpg';
+            $alt[] = t('UV map');
             break;
           case 6:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/wap_szelterkep.jpg" alt="Wind map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu/wap_szelterkep.jpg';
+            $alt[] = t('Wind map');
             break;
           case 7:
-            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/s_anim.gif" alt="Animated wind map">';
+            $link[] = 'http://terkep.idokep.hu/terkep/hu/s_anim.gif';
+            $alt[] = t('Animated wind map');
             break;
           case 8:
-            $content .= '<img src="http://www.idokep.hu/hosszutavu_elore.jpg" alt="Forecast bar">';
+            $link[] = 'http://www.idokep.hu/hosszutavu_elore.jpg';
+            $alt[] = t('Forecast bar');
             break;
           default:
-            $content = t('There is no content for this block.');
+            $content = '';
             break;
         }
       }
+    }
+    $length = count($link);
+    if ($length > 0) {
+      for ($i = 0; $i < $length; $i++) {
+        $content .= l('<img src="' . $link[$i] . '" alt="' . $alt[$i] . '">', 'http://www.idokep.hu', array('html' => TRUE));
+      }
+      $content .= '<br>' . t('source: ') . l(t('idokep.hu'), 'http://www.idokep.hu');
     }
     $block = array(
       'subject' => t('Weather Pic'),

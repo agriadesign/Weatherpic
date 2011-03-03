@@ -2,10 +2,11 @@
 
 /**
  * @file
- * Shows the www.idokep.hu heat map image in a block for Hungary.
+ * Show weather images of www.idokep.hu for Hungary in a block.
  *
- * This module provides an easy way to show the freely
- * available Hungarian www.idokep.hu heat map in a block.
+ * This module provides an easy way to show the freely available
+ * weather images of the Hungarian www.idokep.hu website in a block.
+ * You can easily customize which of the 8 available images to show.
  */
 
 /**
@@ -18,6 +19,21 @@ function weatherpic_block_info() {
     'cache' => DRUPAL_NO_CACHE,
   );
   return $block;
+}
+
+/**
+* Implements hook_help().
+*/
+function weatherpic_help($path, $arg) {
+  if ($path == 'admin/help#weatherpic') {
+    return '<p>' . t('This module provides an easy way to show the freely available weather images of the Hungarian 
+                      www.idokep.hu website in a block.') . '</p><p>' . t('On the <a href="@blocks">blocks
+                      administration page</a> you can define the region where you would like to show the block.',
+                      array('@blocks' => url('admin/structure/block'))) . '</p><p>' . t('At the <a href="@configure">
+                      configuration page</a> you can choose which from the eight images want to show with checking the
+                      corresponding checkbox(es).',
+                      array('@configure' => url('admin/structure/block/manage/weatherpic/weatherpic/configure'))) . '</p>';
+  }
 }
 
 /**

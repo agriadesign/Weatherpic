@@ -12,20 +12,90 @@
  * Implements hook_block_info().
  */
 function weatherpic_block_info() {
-  $blocks = array();
-  $blocks['weatherpic'] = array(
+  $block = array();
+  $block['weatherpic'] = array(
     'info' => t('Weather Pic'),
     'cache' => DRUPAL_NO_CACHE,
   );
-  return $blocks;
+  return $block;
+}
+
+/**
+* Implements hook_block_configure().
+*/
+function weatherpic_block_configure($delta) {
+  $form = array();
+  if ($delta == 'weatherpic') {
+    $options = array(
+      1 => t('Budapest smog map'),
+      2 => t('Clouds map'),
+      3 => t('Animated clouds map'),
+      4 => t('Heat map'),
+      5 => t('UV map'),
+      6 => t('Wind map'),
+      7 => t('Animated wind map'),
+      8 => t('Forecast bar'),
+    );
+    $form['weatherpics'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Weather images'),
+      '#default_value' => variable_get('weatherpics', array()),
+      '#options' => $options,
+      '#description' => t('With these checkboxes you can customize which images to show in the block.'),
+    );
+  }
+  return $form;
+}
+
+/**
+* Implements hook_block_save().
+*/
+function weatherpic_block_save($delta, $edit = array()) {
+if($delta == 'weatherpic') {
+variable_set('weatherpics', $edit['weatherpics']);
+}
+return;
 }
 
 /**
  * Implements hook_block_view().
  */
-function weatherpic_block_view($block_name = '') {
-  if ($block_name == 'weatherpic') {
-    $content = '<img src="http://terkep.idokep.hu/terkep/hu/hom_kozepes.jpg" alt="Heat map">';
+function weatherpic_block_view($delta) {
+  if ($delta == 'weatherpic') {
+    $weatherpics = variable_get('weatherpics');
+    foreach ($weatherpics as $tmp) {
+      if ($tmp != 0) {
+        switch ($tmp) {
+          case 1:
+            $content .= '<img src="http://terkep.idokep.hu/kis_bp_szenny.jpg" alt="Budapest smog map">';
+            break;
+          case 2:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/wap_idokep.jpg" alt="Clouds map">';
+            break;
+          case 3:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/i_anim.gif" alt="Animated clouds map">';
+            break;
+          case 4:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/hom_kozepes.jpg" alt="Heat map">';
+            break;
+          case 5:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu_mini/uvfeny_small.jpg" alt="UV map">';
+            break;
+          case 6:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/wap_szelterkep.jpg" alt="Wind map">';
+            break;
+          case 7:
+            $content .= '<img src="http://terkep.idokep.hu/terkep/hu/s_anim.gif" alt="Animated wind map">';
+            break;
+          case 8:
+            $content .= '<img src="http://www.idokep.hu/hosszutavu_elore.jpg" alt="Forecast bar">';
+            break;
+          default:
+            $content = t('There is no content for this block.');
+            break;
+        }
+      }
+    }
     $block = array(
       'subject' => t('Weather Pic'),
       'content' => $content,

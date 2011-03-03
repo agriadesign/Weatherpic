@@ -1,0 +1,16 @@
+ul#weatherpic-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+li.weatherpic-list-items {
+  padding: 5px 0;
+  margin: 5px 0;
+  text-align: center;
+}
+
+li#weatherpic-source {
+  text-align: center;
+  font-weight: bold;
+}

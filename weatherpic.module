@@ -62,6 +62,7 @@ return;
  */
 function weatherpic_block_view($delta) {
   if ($delta == 'weatherpic') {
+    $content = '';
     $weatherpics = variable_get('weatherpics');
     foreach ($weatherpics as $tmp) {
       if ($tmp != 0) {
